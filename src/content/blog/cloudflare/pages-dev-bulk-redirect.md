@@ -3,7 +3,7 @@ title: 'Cloudflare Pagesのpages.devをBulk Redirectsでリダイレクトする
 description: 'Page Rulesでは対応できない*.pages.devのリダイレクトを、Bulk Redirectsで設定する手順とpreview URLを守るための注意点をまとめました。'
 pubDate: '2026-06-20'
 heroImage: '../../../assets/blog-placeholder-5.jpg'
-category: 'Cloudflare'
+category: 'cloudflare'
 ---
 
 ## 背景 — `*.pages.dev` は独自ドメインを設定しても残り続ける
