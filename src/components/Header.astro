@@ -1,19 +1,10 @@
 ---
-import { CATEGORY_ICONS, CATEGORY_ORDER, getCategoryLabel, SITE_TITLE } from '../consts';
+import { SITE_TITLE } from '../consts';
 ---
 
 <header>
 	<nav>
 		<a class="site-title" href="/">{SITE_TITLE}</a>
-
-		<div class="nav-links" id="nav-links">
-			{CATEGORY_ORDER.map((cat) => (
-				<a href={`/${cat}/`} class="nav-link">
-					<span class="material-symbols-outlined" aria-hidden="true">{CATEGORY_ICONS[cat] ?? 'article'}</span>
-					{getCategoryLabel(cat)}
-				</a>
-			))}
-		</div>
 
 		<div class="header-right">
 			<a href="https://x.com/kkk2jp" target="_blank" rel="noopener" aria-label="Twitter/X" class="social-link">
@@ -26,20 +17,8 @@ import { CATEGORY_ICONS, CATEGORY_ORDER, getCategoryLabel, SITE_TITLE } from '..
 					<path d="M0 .279c4.623 0 10.953-.235 15.498-.117 6.099.156 8.39 2.813 8.468 9.374.077 3.71 0 14.335 0 14.335h-6.598c0-9.296.04-10.83 0-13.759-.078-2.578-.814-3.807-2.795-4.041-2.097-.235-7.975-.04-7.975-.04v17.84H0Z"/>
 				</svg>
 			</a>
-			<button class="hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu">
-				<span class="material-symbols-outlined" aria-hidden="true">menu</span>
-			</button>
 		</div>
 	</nav>
-
-	<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-		{CATEGORY_ORDER.map((cat) => (
-			<a href={`/${cat}/`} class="mobile-nav-link">
-				<span class="material-symbols-outlined" aria-hidden="true">{CATEGORY_ICONS[cat] ?? 'article'}</span>
-				{getCategoryLabel(cat)}
-			</a>
-		))}
-	</div>
 </header>
 
 <style>
@@ -49,8 +28,6 @@ import { CATEGORY_ICONS, CATEGORY_ORDER, getCategoryLabel, SITE_TITLE } from '..
 		z-index: 100;
 		background: var(--md-surface);
 		border-bottom: 1px solid var(--md-outline-variant);
-		/* mobile menuのabsolute基準点 */
-		isolation: isolate;
 	}
 	nav {
 		max-width: 960px;
@@ -59,7 +36,7 @@ import { CATEGORY_ICONS, CATEGORY_ORDER, getCategoryLabel, SITE_TITLE } from '..
 		height: 64px;
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		justify-content: space-between;
 	}
 	.site-title {
 		font-size: 1.25rem;
@@ -67,42 +44,12 @@ import { CATEGORY_ICONS, CATEGORY_ORDER, getCategoryLabel, SITE_TITLE } from '..
 		color: var(--md-on-surface);
 		text-decoration: none;
 		letter-spacing: -0.01em;
-		margin-right: 8px;
 		white-space: nowrap;
 		flex-shrink: 0;
 		padding-bottom: 4px;
 	}
 	.site-title:hover { color: var(--md-primary); text-decoration: none; }
 
-	/* Desktop nav */
-	.nav-links {
-		display: flex;
-		gap: 4px;
-		flex: 1;
-	}
-	.nav-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-		padding: 8px 14px;
-		border-radius: 9999px;
-		font-size: 0.9375rem;
-		font-weight: 500;
-		color: var(--md-on-surface-variant);
-		text-decoration: none;
-		transition: background 0.15s, color 0.15s;
-		white-space: nowrap;
-		line-height: 1;
-	}
-	.nav-link .material-symbols-outlined {
-		font-size: 16px;
-		line-height: 1;
-		vertical-align: middle;
-	}
-	.nav-link:hover { background: var(--md-surface-variant); color: var(--md-on-surface); text-decoration: none; }
-	.nav-link[aria-current] { background: var(--md-primary-container); color: var(--md-on-primary-container); font-weight: 700; }
-
-	/* Right side */
 	.header-right {
 		display: flex;
 		align-items: center;
@@ -120,86 +67,4 @@ import { CATEGORY_ICONS, CATEGORY_ORDER, getCategoryLabel, SITE_TITLE } from '..
 		transition: background 0.15s, color 0.15s;
 	}
 	.social-link:hover { background: var(--md-surface-variant); color: var(--md-on-surface); text-decoration: none; }
-
-	/* Hamburger — mobile only */
-	.hamburger {
-		display: none;
-		align-items: center;
-		justify-content: center;
-		width: 36px;
-		height: 36px;
-		border: none;
-		background: transparent;
-		border-radius: 9999px;
-		cursor: pointer;
-		color: var(--md-on-surface-variant);
-		transition: background 0.15s;
-	}
-	.hamburger .material-symbols-outlined { font-size: 22px; line-height: 1; }
-	.hamburger:hover { background: var(--md-surface-variant); }
-
-	/* Mobile menu — overlay */
-	.mobile-menu {
-		display: none;
-		position: absolute;
-		top: 64px;
-		left: 0;
-		right: 0;
-		flex-direction: column;
-		padding: 8px 16px 16px;
-		background: var(--md-surface);
-		border-bottom: 1px solid var(--md-outline-variant);
-		box-shadow: 0 8px 24px rgba(0,0,0,.1);
-		z-index: 200;
-	}
-	.mobile-menu.open { display: flex; }
-	.mobile-nav-link {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		padding: 12px 8px;
-		border-radius: 12px;
-		font-size: 0.9375rem;
-		font-weight: 500;
-		color: var(--md-on-surface);
-		text-decoration: none;
-		transition: background 0.15s;
-	}
-	.mobile-nav-link .material-symbols-outlined { font-size: 20px; color: var(--md-primary); }
-	.mobile-nav-link:hover { background: var(--md-surface-variant); text-decoration: none; }
-
-	@media (max-width: 640px) {
-		.nav-links { display: none; }
-		.hamburger { display: inline-flex; }
-		nav { justify-content: space-between; height: 64px; }
-		.mobile-menu { top: 64px; }
-	}
 </style>
-
-<script>
-	const btn = document.getElementById('hamburger');
-	const menu = document.getElementById('mobile-menu');
-
-	function closeMenu() {
-		menu?.classList.remove('open');
-		btn?.setAttribute('aria-expanded', 'false');
-		btn?.setAttribute('aria-label', 'メニューを開く');
-		const icon = btn?.querySelector('.material-symbols-outlined');
-		if (icon) icon.textContent = 'menu';
-	}
-
-	btn?.addEventListener('click', (e) => {
-		e.stopPropagation();
-		const isOpen = menu?.classList.toggle('open');
-		btn.setAttribute('aria-expanded', String(isOpen));
-		btn.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
-		const icon = btn.querySelector('.material-symbols-outlined');
-		if (icon) icon.textContent = isOpen ? 'close' : 'menu';
-	});
-
-	document.addEventListener('click', (e) => {
-		if (menu?.classList.contains('open') && !menu.contains(e.target as Node)) {
-			closeMenu();
-		}
-	});
-</script>

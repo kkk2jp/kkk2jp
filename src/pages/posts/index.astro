@@ -1,0 +1,123 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { CATEGORY_ICONS, getCategoryLabel, SITE_TITLE } from '../../consts';
+
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`すべての記事 | ${SITE_TITLE}`} description="全記事一覧" />
+		<style>
+			main { width: 960px; }
+
+			.back-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+				margin-bottom: 24px;
+				color: var(--md-primary);
+				text-decoration: none;
+				font-size: 0.875rem;
+				font-weight: 500;
+			}
+			.back-link:hover { text-decoration: underline; }
+
+			.page-header {
+				margin-bottom: 24px;
+				padding-bottom: 16px;
+				border-bottom: 2px solid var(--md-primary);
+			}
+			.page-header h1 {
+				font-size: 1.75rem;
+				font-weight: 700;
+				margin: 0 0 4px;
+			}
+			.page-header p {
+				color: var(--md-on-surface-variant);
+				font-size: 0.875rem;
+				margin: 0;
+			}
+
+			.category-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 3px;
+				padding: 2px 8px;
+				border-radius: 9999px;
+				font-size: 0.72rem;
+				font-weight: 600;
+				white-space: nowrap;
+				flex-shrink: 0;
+			}
+			.category-badge .material-symbols-outlined { font-size: 11px; }
+			.badge-dotnet      { background: #EDE9FB; color: #512BD4; }
+			.badge-bi          { background: #E3F2FD; color: #0067B8; }
+			.badge-ai          { background: #E6F6F1; color: #0A7A5A; }
+			.badge-cloudflare  { background: #FEF3E6; color: #C96200; }
+
+			.post-meta {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				flex-wrap: wrap;
+				margin-top: 4px;
+			}
+			.post-meta .date { margin: 0; }
+
+			@media (max-width: 640px) {
+				.post-list .post-thumb { width: 56px; height: 42px; }
+				.post-list .post-thumb .material-symbols-outlined { font-size: 22px; }
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<a class="back-link" href="/">← トップに戻る</a>
+			<div class="page-header">
+				<h1>すべての記事</h1>
+				<p>{allPosts.length}件の記事</p>
+			</div>
+
+			<ul class="post-list">
+				{allPosts.map((post) => {
+					const parts = post.id.split('/');
+					const cat = parts[0];
+					const slug = parts.slice(1).join('/');
+					return (
+						<li>
+							<a href={`/${cat}/${slug}/`}>
+								<div class="post-thumb">
+									<span class="material-symbols-outlined" aria-hidden="true">
+										{CATEGORY_ICONS[cat] ?? 'article'}
+									</span>
+								</div>
+								<div class="post-info">
+									<h2>{post.data.title}</h2>
+									<div class="post-meta">
+										<span class={`category-badge badge-${cat}`}>
+											<span class="material-symbols-outlined" aria-hidden="true">
+												{CATEGORY_ICONS[cat] ?? 'article'}
+											</span>
+											{getCategoryLabel(cat)}
+										</span>
+										<p class="date"><FormattedDate date={post.data.pubDate} /></p>
+									</div>
+								</div>
+							</a>
+						</li>
+					);
+				})}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>

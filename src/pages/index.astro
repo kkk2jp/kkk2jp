@@ -10,12 +10,7 @@ const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const postsByCategory = Object.fromEntries(
-	CATEGORY_ORDER.map((cat) => [
-		cat,
-		allPosts.filter((p) => p.data.category === cat).slice(0, 5),
-	]),
-);
+const latestPosts = allPosts.slice(0, 10);
 ---
 
 <!doctype html>
@@ -25,30 +20,92 @@ const postsByCategory = Object.fromEntries(
 		<style>
 			main { width: 960px; }
 
-			.category-section { margin-bottom: 48px; }
-
-			.category-section-header {
+			/* ── Category tiles ── */
+			.category-tiles {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 16px;
+				margin-bottom: 48px;
+			}
+			.category-tile {
 				display: flex;
+				flex-direction: column;
 				align-items: center;
-				justify-content: space-between;
-				margin-bottom: 16px;
+				gap: 10px;
+				padding: 28px 16px 24px;
+				border-radius: 16px;
+				border: 1px solid var(--md-outline-variant);
+				text-decoration: none;
+				color: var(--md-on-surface);
+				background: var(--md-surface);
+				transition: background 0.15s, box-shadow 0.15s;
+			}
+			.category-tile:hover {
+				background: var(--md-surface-variant);
+				box-shadow: var(--box-shadow);
+				text-decoration: none;
+			}
+			.category-tile .material-symbols-outlined {
+				font-size: 40px;
+				color: var(--md-primary);
+			}
+			.category-tile-name {
+				font-size: 0.9rem;
+				font-weight: 600;
+				text-align: center;
+			}
+
+			/* ── Section header ── */
+			.section-header {
+				font-size: 1.125rem;
+				font-weight: 700;
+				margin: 0 0 16px;
 				padding-bottom: 12px;
 				border-bottom: 2px solid var(--md-primary);
 			}
-			.category-section-header h2 {
-				margin: 0;
-				font-size: 1.25rem;
-				font-weight: 700;
+
+			/* ── Category badges ── */
+			.category-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 3px;
+				padding: 2px 8px;
+				border-radius: 9999px;
+				font-size: 0.72rem;
+				font-weight: 600;
+				white-space: nowrap;
+				flex-shrink: 0;
 			}
-			.category-section-header a.more {
-				font-size: 0.875rem;
+			.category-badge .material-symbols-outlined { font-size: 11px; }
+			.badge-dotnet      { background: #EDE9FB; color: #512BD4; }
+			.badge-bi          { background: #E3F2FD; color: #0067B8; }
+			.badge-ai          { background: #E6F6F1; color: #0A7A5A; }
+			.badge-cloudflare  { background: #FEF3E6; color: #C96200; }
+
+			/* meta row inside post-info */
+			.post-meta {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				flex-wrap: wrap;
+				margin-top: 4px;
+			}
+			.post-meta .date { margin: 0; }
+
+			/* ── See all ── */
+			.see-all {
+				display: block;
+				text-align: center;
+				margin-top: 8px;
+				font-size: 0.9375rem;
+				font-weight: 500;
 				color: var(--md-primary);
 				text-decoration: none;
-				font-weight: 500;
 			}
-			.category-section-header a.more:hover { text-decoration: underline; }
+			.see-all:hover { text-decoration: underline; }
 
-			@media (max-width: 720px) {
+			@media (max-width: 640px) {
+				.category-tiles { grid-template-columns: repeat(2, 1fr); }
 				.post-list .post-thumb { width: 56px; height: 42px; }
 				.post-list .post-thumb .material-symbols-outlined { font-size: 22px; }
 			}
@@ -57,35 +114,52 @@ const postsByCategory = Object.fromEntries(
 	<body>
 		<Header />
 		<main>
-			{CATEGORY_ORDER.map((cat) => (
-				<section class="category-section">
-					<div class="category-section-header">
-						<h2>{getCategoryLabel(cat)}</h2>
-						<a class="more" href={`/${cat}/`}>すべて見る →</a>
-					</div>
-					<ul class="post-list">
-						{postsByCategory[cat].map((post) => {
-							const parts = post.id.split('/');
-							const slug = parts.slice(1).join('/');
-							return (
-								<li>
-									<a href={`/${cat}/${slug}/`}>
-										<div class="post-thumb">
+			<!-- Category tiles -->
+			<div class="category-tiles">
+				{CATEGORY_ORDER.map((cat) => (
+					<a class="category-tile" href={`/${cat}/`}>
+						<span class="material-symbols-outlined" aria-hidden="true">
+							{CATEGORY_ICONS[cat] ?? 'article'}
+						</span>
+						<span class="category-tile-name">{getCategoryLabel(cat)}</span>
+					</a>
+				))}
+			</div>
+
+			<!-- Latest posts -->
+			<h2 class="section-header">最新の記事</h2>
+			<ul class="post-list">
+				{latestPosts.map((post) => {
+					const parts = post.id.split('/');
+					const cat = parts[0];
+					const slug = parts.slice(1).join('/');
+					return (
+						<li>
+							<a href={`/${cat}/${slug}/`}>
+								<div class="post-thumb">
+									<span class="material-symbols-outlined" aria-hidden="true">
+										{CATEGORY_ICONS[cat] ?? 'article'}
+									</span>
+								</div>
+								<div class="post-info">
+									<h3>{post.data.title}</h3>
+									<div class="post-meta">
+										<span class={`category-badge badge-${cat}`}>
 											<span class="material-symbols-outlined" aria-hidden="true">
 												{CATEGORY_ICONS[cat] ?? 'article'}
 											</span>
-										</div>
-										<div class="post-info">
-											<h3>{post.data.title}</h3>
-											<p class="date"><FormattedDate date={post.data.pubDate} /></p>
-										</div>
-									</a>
-								</li>
-							);
-						})}
-					</ul>
-				</section>
-			))}
+											{getCategoryLabel(cat)}
+										</span>
+										<p class="date"><FormattedDate date={post.data.pubDate} /></p>
+									</div>
+								</div>
+							</a>
+						</li>
+					);
+				})}
+			</ul>
+
+			<a class="see-all" href="/posts/">すべての記事を見る →</a>
 		</main>
 		<Footer />
 	</body>
