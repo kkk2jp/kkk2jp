@@ -49,6 +49,14 @@ const latestPosts = allPosts.slice(0, 10);
 				font-size: 40px;
 				color: var(--md-primary);
 			}
+			.category-tile.tile-dotnet     { background: #F5F2FF; border-color: #D4CAFF; }
+			.category-tile.tile-dotnet .material-symbols-outlined { color: #512BD4; }
+			.category-tile.tile-bi         { background: #EFF7FF; border-color: #BBDEFB; }
+			.category-tile.tile-bi .material-symbols-outlined     { color: #0067B8; }
+			.category-tile.tile-ai         { background: #EFFAF5; border-color: #B2DFDB; }
+			.category-tile.tile-ai .material-symbols-outlined     { color: #0A7A5A; }
+			.category-tile.tile-cloudflare { background: #FFF9F0; border-color: #FFD9A6; }
+			.category-tile.tile-cloudflare .material-symbols-outlined { color: #C96200; }
 			.category-tile-name {
 				font-size: 0.9rem;
 				font-weight: 600;
@@ -117,7 +125,7 @@ const latestPosts = allPosts.slice(0, 10);
 			<!-- Category tiles -->
 			<div class="category-tiles">
 				{CATEGORY_ORDER.map((cat) => (
-					<a class="category-tile" href={`/${cat}/`}>
+					<a class={`category-tile tile-${cat}`} href={`/${cat}/`}>
 						<span class="material-symbols-outlined" aria-hidden="true">
 							{CATEGORY_ICONS[cat] ?? 'article'}
 						</span>
@@ -136,7 +144,7 @@ const latestPosts = allPosts.slice(0, 10);
 					return (
 						<li>
 							<a href={`/${cat}/${slug}/`}>
-								<div class="post-thumb">
+								<div class={`post-thumb thumb-${cat}`}>
 									<span class="material-symbols-outlined" aria-hidden="true">
 										{CATEGORY_ICONS[cat] ?? 'article'}
 									</span>

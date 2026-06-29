@@ -95,7 +95,7 @@ const allPosts = (await getCollection('blog')).sort(
 					return (
 						<li>
 							<a href={`/${cat}/${slug}/`}>
-								<div class="post-thumb">
+								<div class={`post-thumb thumb-${cat}`}>
 									<span class="material-symbols-outlined" aria-hidden="true">
 										{CATEGORY_ICONS[cat] ?? 'article'}
 									</span>

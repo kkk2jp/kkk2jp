@@ -114,7 +114,7 @@ const pagePosts = posts.slice(0, PAGE_SIZE);
 					return (
 						<li>
 							<a href={`/${category}/${slug}/`}>
-								<div class="post-thumb">
+								<div class={`post-thumb thumb-${category}`}>
 									<span class="material-symbols-outlined" aria-hidden="true">{icon}</span>
 								</div>
 								<div class="post-info">
