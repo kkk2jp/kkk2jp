@@ -4,7 +4,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { CATEGORY_ICONS, getCategoryLabel, SITE_TITLE } from '../../consts';
+import { getCategoryColor, getCategoryIcon, getCategoryLabel, SITE_TITLE } from '../../consts';
 
 export async function getStaticPaths() {
 	const PAGE_SIZE = 10;
@@ -27,7 +27,8 @@ const { category, pagenum } = Astro.params;
 const { posts, totalPages } = Astro.props;
 const currentPage = Number(pagenum);
 const label = getCategoryLabel(category);
-const icon = CATEGORY_ICONS[category] ?? 'article';
+const icon = getCategoryIcon(category);
+const accent = getCategoryColor(category);
 const pagePosts = posts.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 ---
 
@@ -117,7 +118,7 @@ const pagePosts = posts.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_
 					return (
 						<li>
 							<a href={`/${category}/${slug}/`}>
-								<div class={`post-thumb thumb-${category}`}>
+								<div class="post-thumb" style={`--cat: ${accent}`}>
 									<span class="material-symbols-outlined" aria-hidden="true">{icon}</span>
 								</div>
 								<div class="post-info">

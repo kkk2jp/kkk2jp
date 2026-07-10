@@ -4,7 +4,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { CATEGORY_ICONS, getCategoryLabel, SITE_TITLE } from '../../consts';
+import { getCategoryColor, getCategoryIcon, getCategoryLabel, SITE_TITLE } from '../../consts';
 
 const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -58,10 +58,11 @@ const allPosts = (await getCollection('blog')).sort(
 				flex-shrink: 0;
 			}
 			.category-badge .material-symbols-outlined { font-size: 11px; }
-			.badge-dotnet      { background: #EDE9FB; color: #512BD4; }
-			.badge-bi          { background: #E3F2FD; color: #0067B8; }
-			.badge-ai          { background: #E6F6F1; color: #0A7A5A; }
-			.badge-cloudflare  { background: #FEF3E6; color: #C96200; }
+			/* --cat から淡い背景 + アクセント文字色を自動生成 */
+			.category-badge {
+				background: color-mix(in srgb, var(--cat, var(--md-primary)) 12%, #fff);
+				color: var(--cat, var(--md-primary));
+			}
 
 			.post-meta {
 				display: flex;
@@ -95,17 +96,17 @@ const allPosts = (await getCollection('blog')).sort(
 					return (
 						<li>
 							<a href={`/${cat}/${slug}/`}>
-								<div class={`post-thumb thumb-${cat}`}>
+								<div class="post-thumb" style={`--cat: ${getCategoryColor(cat)}`}>
 									<span class="material-symbols-outlined" aria-hidden="true">
-										{CATEGORY_ICONS[cat] ?? 'article'}
+										{getCategoryIcon(cat)}
 									</span>
 								</div>
 								<div class="post-info">
 									<h2>{post.data.title}</h2>
 									<div class="post-meta">
-										<span class={`category-badge badge-${cat}`}>
+										<span class="category-badge" style={`--cat: ${getCategoryColor(cat)}`}>
 											<span class="material-symbols-outlined" aria-hidden="true">
-												{CATEGORY_ICONS[cat] ?? 'article'}
+												{getCategoryIcon(cat)}
 											</span>
 											{getCategoryLabel(cat)}
 										</span>

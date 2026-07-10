@@ -16,8 +16,11 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
+
+// ビルド時生成のOGP画像（/open-graph/{category}/{slug}.png）
+const ogImage = `/open-graph/${post.id}.png`;
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} ogImage={ogImage}>
 	<Content />
 </BlogPost>
