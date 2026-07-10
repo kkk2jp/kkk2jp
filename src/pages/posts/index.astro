@@ -17,66 +17,6 @@ const allPosts = (await getCollection('blog')).sort(
 		<BaseHead title={`すべての記事 | ${SITE_TITLE}`} description="全記事一覧" />
 		<style>
 			main { width: 960px; }
-
-			.back-link {
-				display: inline-flex;
-				align-items: center;
-				gap: 4px;
-				margin-bottom: 24px;
-				color: var(--md-primary);
-				text-decoration: none;
-				font-size: 0.875rem;
-				font-weight: 500;
-			}
-			.back-link:hover { text-decoration: underline; }
-
-			.page-header {
-				margin-bottom: 24px;
-				padding-bottom: 16px;
-				border-bottom: 2px solid var(--md-primary);
-			}
-			.page-header h1 {
-				font-size: 1.75rem;
-				font-weight: 700;
-				margin: 0 0 4px;
-			}
-			.page-header p {
-				color: var(--md-on-surface-variant);
-				font-size: 0.875rem;
-				margin: 0;
-			}
-
-			.category-badge {
-				display: inline-flex;
-				align-items: center;
-				gap: 3px;
-				padding: 2px 8px;
-				border-radius: 9999px;
-				font-size: 0.72rem;
-				font-weight: 600;
-				white-space: nowrap;
-				flex-shrink: 0;
-			}
-			.category-badge .material-symbols-outlined { font-size: 11px; }
-			/* --cat から淡い背景 + アクセント文字色を自動生成 */
-			.category-badge {
-				background: color-mix(in srgb, var(--cat, var(--md-primary)) 12%, #fff);
-				color: var(--cat, var(--md-primary));
-			}
-
-			.post-meta {
-				display: flex;
-				align-items: center;
-				gap: 8px;
-				flex-wrap: wrap;
-				margin-top: 4px;
-			}
-			.post-meta .date { margin: 0; }
-
-			@media (max-width: 640px) {
-				.post-list .post-thumb { width: 56px; height: 42px; }
-				.post-list .post-thumb .material-symbols-outlined { font-size: 22px; }
-			}
 		</style>
 	</head>
 	<body>
@@ -85,7 +25,7 @@ const allPosts = (await getCollection('blog')).sort(
 			<a class="back-link" href="/">← トップに戻る</a>
 			<div class="page-header">
 				<h1>すべての記事</h1>
-				<p>{allPosts.length}件の記事</p>
+				<p class="count">{allPosts.length}件の記事</p>
 			</div>
 
 			<ul class="post-list">

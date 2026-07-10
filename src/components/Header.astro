@@ -1,10 +1,14 @@
 ---
 import { SITE_TITLE } from '../consts';
+import ShimejiMark from './ShimejiMark.astro';
 ---
 
 <header>
 	<nav>
-		<a class="site-title" href="/">{SITE_TITLE}</a>
+		<a class="site-title" href="/">
+			<ShimejiMark size={22} />
+			{SITE_TITLE}
+		</a>
 
 		<div class="header-right">
 			<a href="https://x.com/kkk2jp" target="_blank" rel="noopener" aria-label="Twitter/X" class="social-link">
@@ -26,29 +30,35 @@ import { SITE_TITLE } from '../consts';
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		background: var(--md-surface);
+		/* ページ背景と同系色にして真っ白な帯感をなくす */
+		background: color-mix(in srgb, var(--md-background) 80%, transparent);
+		-webkit-backdrop-filter: blur(12px) saturate(1.5);
+		backdrop-filter: blur(12px) saturate(1.5);
 		border-bottom: 1px solid var(--md-outline-variant);
 	}
 	nav {
 		max-width: 960px;
 		margin: auto;
 		padding: 0 16px;
-		height: 64px;
+		height: 60px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.site-title {
-		font-size: 1.25rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--font-display);
+		font-size: 1.3125rem;
 		font-weight: 700;
 		color: var(--md-on-surface);
 		text-decoration: none;
-		letter-spacing: -0.01em;
+		letter-spacing: -0.02em;
 		white-space: nowrap;
 		flex-shrink: 0;
-		padding-bottom: 4px;
 	}
-	.site-title:hover { color: var(--md-primary); text-decoration: none; }
+	.site-title:hover { text-decoration: none; opacity: 0.75; transition: opacity 0.15s; }
 
 	.header-right {
 		display: flex;
