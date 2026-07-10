@@ -21,11 +21,6 @@ export const { getStaticPaths, GET } = await OGImageRoute({
 		return {
 			title: page.title,
 			description: `${getCategoryLabel(page.category)}   ·   ${SITE_TITLE}`,
-			// しめじマーク（カード上部に表示）
-			logo: {
-				path: './src/assets/shimeji-mark.png',
-				size: [48],
-			},
 			// 白ベースのごく淡いグラデーション
 			bgGradient: [
 				[255, 255, 255],
@@ -37,12 +32,12 @@ export const { getStaticPaths, GET } = await OGImageRoute({
 				width: 24,
 				side: 'inline-start',
 			},
-			padding: 70,
+			padding: 90,
 			font: {
 				title: {
 					color: [24, 24, 27],
 					weight: 'Bold',
-					size: 56,
+					size: 66,
 					lineHeight: 1.32,
 					families: ['Noto Sans JP'],
 				},

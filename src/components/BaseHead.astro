@@ -58,12 +58,11 @@ const ogImageURL =
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageURL} />
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={ogImageURL} />
+<!-- Twitter / X（クローラーは property= ではなく name= を読む） -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHK402VJMM"></script>

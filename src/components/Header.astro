@@ -1,14 +1,10 @@
 ---
 import { SITE_TITLE } from '../consts';
-import ShimejiMark from './ShimejiMark.astro';
 ---
 
 <header>
 	<nav>
-		<a class="site-title" href="/">
-			<ShimejiMark size={22} />
-			{SITE_TITLE}
-		</a>
+		<a class="site-title" href="/">{SITE_TITLE}</a>
 
 		<div class="header-right">
 			<a href="https://x.com/kkk2jp" target="_blank" rel="noopener" aria-label="Twitter/X" class="social-link">
